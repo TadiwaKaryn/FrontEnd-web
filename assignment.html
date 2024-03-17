@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Interaction</title>
+  <style>
+.container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.login-side {
+  width: 45%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.login-side {
+  background-color: #3498db; /* Blue color for login side */
+  color: white;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.login-btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.signup-form {
+  display: none;
+  background-color: gray; /* gray color for signup side */
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-side">
+      <h2>Login</h2>
+      <p>Welcome back 😊</p>
+        <p>Please enter your credentials below:</p>
+      <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br><br>
+        <button type="submit">Login</button>
+      </form>   
+      <br>
+      <br>
+      <br>
+        <p>New to our site? Sign up Below: </p> 
+        <div class="container">
+          <div class="button-container">
+              <button class="signup-button" onclick="showSignupForm()">Signup</button>
+          </div>
+          <form class="signup-form" id="signupForm">
+              <label for="fname">First Name:</label>
+              <input type="text" id="fname" name="fname" required><br><br>
+              <label for="lname">Last Name:</label>
+              <input type="text" id="lname" name="lname" required><br><br>
+              <label for="country_id">Country ID:</label>
+              <input type="text" id="country_id" name="country_id" required><br><br>
+              <label for="phone">Phone:</label>
+              <input type="text" id="phone" name="phone" required><br><br>
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required><br><br>
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required><br><br>
+              <button type="submit">Submit</button>
+          </form>
+      </div>
+  
+      <script>
+          function showSignupForm() {
+              document.getElementById("signupForm").style.display = "block"; // Display signup form
+          }
+          const API_BASE_URL = 'https://app.signalgas.io/api/v1/customer';
+
+    // Function to handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/signin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        console.log('Login successful:', data);
+        // Handle successful login
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed. Please check your email and password.');
+      }
+    });
+
+    // Function to handle signup form submission
+    document.getElementById('signupForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fname = document.getElementById('fname').value;
+      const lname = document.getElementById('lname').value;
+      const phone = document.getElementById('phone').value;
+      const signupEmail = document.getElementById('signupEmail').value;
+      const signupPassword = document.getElementById('signupPassword').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ fname, lname, phone, email: signupEmail, password: signupPassword })
+        });
+        const data = await response.json();
+        console.log('Signup successful:', data);
+        // Handle successful signup
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert('Signup failed. Please check your details and try again.');
+      }
+    });
+      </script>
+</body>
+</html>
